@@ -212,6 +212,25 @@ function calcularAhorro() {
 }
 
 // ================================================================
+// APP INSTALADA EN EL CELULAR (PWA)
+// ================================================================
+
+// Devuelve true si la app se abrió desde el ícono instalado (pantalla completa)
+// y false si se abrió en una pestaña del navegador.
+function estaInstalada() {
+  return window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+}
+
+// Registra el service worker (sw.js), que guarda una copia de la app para usarla sin internet.
+// Solo funciona en una página web de verdad (https o localhost): si abrís index.html
+// con doble clic, el navegador no lo permite y simplemente seguimos sin él.
+if ("serviceWorker" in navigator && window.location.protocol !== "file:") {
+  navigator.serviceWorker.register("sw.js").catch(() => {
+    // Si falla, la app funciona igual (solo que sin modo sin conexión)
+  });
+}
+
+// ================================================================
 // NAVEGACIÓN ENTRE MESES (flechas ‹ › y "Volver a hoy")
 // Las dos páginas tienen estos mismos botones en el encabezado.
 // ================================================================

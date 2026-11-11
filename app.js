@@ -437,6 +437,13 @@ function iniciar() {
   prepararNavegacionMes(alCambiarMes);
   enlaceAhorro.href = "ahorro.html?mes=" + mesVisible;
 
+  // En la app instalada no hay pestañas: "Mi ahorro" se abre en la misma pantalla
+  // (si no, el celular la abriría en el navegador, fuera de la app)
+  if (estaInstalada()) {
+    enlaceAhorro.removeAttribute("target");
+    enlaceAhorro.textContent = "Ver mi ahorro →";
+  }
+
   // Recuperamos lo que se haya guardado la última vez
   cargarDatos();
   tiposFijos = leerDelNavegador(CLAVE_TIPOS_FIJOS, [...TIPOS_FIJOS_INICIALES]);
