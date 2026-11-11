@@ -1,0 +1,9 @@
+# Archivos que NO se suben a GitHub
+
+# Instrucciones personales para Claude Code
+CLAUDE.md
+.claude/
+
+# Archivos que crea Windows solo
+Thumbs.db
+desktop.ini

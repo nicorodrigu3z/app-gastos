@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <!-- Esta línea hace que la página se vea bien en el celular -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis gastos del mes</title>
+  <meta name="description" content="App para llevar los ingresos y gastos del mes, ver en qué se gasta y cuánto se puede ahorrar.">
+  <!-- Ícono de la pestaña del navegador -->
+  <link rel="icon" href="icono.svg" type="image/svg+xml">
+  <!-- Fuente Inter de Google Fonts (preconnect hace que cargue más rápido) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <header class="encabezado">
+    <h1>Mis gastos del mes</h1>
+
+    <!-- Flechas para cambiar de mes (las maneja datos.js) -->
+    <div class="navegador-mes">
+      <button type="button" id="mes-anterior" class="flecha-mes" aria-label="Mes anterior">‹</button>
+      <p id="titulo-mes" class="subtitulo" aria-live="polite"></p>
+      <button type="button" id="mes-siguiente" class="flecha-mes" aria-label="Mes siguiente">›</button>
+    </div>
+    <button type="button" id="volver-a-hoy" class="boton-texto volver-hoy" hidden>Volver a hoy</button>
+
+    <!-- target="_blank" abre la página en una pestaña nueva del navegador.
+         El href se completa desde app.js con el mes que estás mirando (ej: ahorro.html?mes=2026-10) -->
+    <a href="ahorro.html" id="enlace-ahorro" target="_blank" rel="noopener" class="enlace enlace-ahorro">Ver mi ahorro ↗</a>
+  </header>
+
+  <main class="contenedor">
+    <!-- Sección 1: formulario para cargar un ingreso o un gasto -->
+    <section class="tarjeta">
+      <h2>Nuevo movimiento</h2>
+      <form id="formulario-movimiento">
+        <div class="campo">
+          <label for="campo-tipo">Tipo</label>
+          <select id="campo-tipo" required>
+            <option value="gasto">Gasto</option>
+            <option value="ingreso">Ingreso</option>
+          </select>
+        </div>
+
+        <div class="campo">
+          <label for="campo-categoria">Categoría</label>
+          <!-- Las opciones se llenan desde app.js según el tipo elegido -->
+          <select id="campo-categoria" required></select>
+        </div>
+
+        <!-- Solo se muestra cuando la categoría es "Gasto fijo" -->
+        <div class="campo" id="contenedor-tipo-fijo" hidden>
+          <label for="campo-tipo-fijo">¿Cuál?</label>
+          <!-- Las opciones se llenan desde app.js (incluye "+ Agregar otro…") -->
+          <select id="campo-tipo-fijo"></select>
+        </div>
+
+        <div class="campo">
+          <label for="campo-monto">Monto ($)</label>
+          <input type="number" id="campo-monto" min="0.01" step="0.01" placeholder="0" required>
+          <!-- Solo para gastos fijos: cuánto se pagó la última vez -->
+          <small id="referencia-fijo" class="referencia" hidden></small>
+        </div>
+
+        <div class="campo">
+          <label for="campo-fecha">Fecha</label>
+          <input type="date" id="campo-fecha" required>
+        </div>
+
+        <div class="campo campo-ancho">
+          <label for="campo-descripcion" id="etiqueta-descripcion">Descripción</label>
+          <input type="text" id="campo-descripcion" placeholder="Ej: Supermercado">
+        </div>
+
+        <button type="submit" class="boton">Agregar</button>
+      </form>
+      <!-- aria-live hace que los lectores de pantalla lean el mensaje cuando aparece -->
+      <p id="mensaje-error" class="mensaje-error" aria-live="polite"></p>
+    </section>
+
+    <!-- Sección 2: lo que pasó en el mes, con dos pestañas -->
+    <section class="tarjeta">
+      <h2>Este mes</h2>
+
+      <!-- Pestañas: cada botón muestra uno de los dos paneles de abajo -->
+      <div class="pestanas" role="tablist">
+        <!-- aria-controls / aria-labelledby le dicen a los lectores de pantalla qué pestaña abre qué panel -->
+        <button type="button" id="pestana-movimientos" class="pestana activa" role="tab" aria-selected="true" aria-controls="panel-movimientos" data-panel="panel-movimientos">Movimientos</button>
+        <button type="button" id="pestana-categorias" class="pestana" role="tab" aria-selected="false" aria-controls="panel-categorias" data-panel="panel-categorias">Por categoría</button>
+      </div>
+
+      <!-- Panel 1: lista de movimientos del mes -->
+      <div id="panel-movimientos" role="tabpanel" aria-labelledby="pestana-movimientos">
+        <ul id="lista-movimientos" class="lista"></ul>
+        <p id="lista-vacia" class="lista-vacia">No hay movimientos en este mes.</p>
+      </div>
+
+      <!-- Panel 2: cuánto se gastó en cada categoría -->
+      <div id="panel-categorias" role="tabpanel" aria-labelledby="pestana-categorias" hidden>
+        <ul id="lista-categorias" class="lista"></ul>
+        <p id="total-gastado" class="total-gastado"></p>
+        <p id="categorias-vacia" class="lista-vacia">No hay gastos en este mes.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Primero el código compartido, después el propio de esta página -->
+  <script src="datos.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

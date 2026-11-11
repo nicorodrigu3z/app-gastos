@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <!-- Esta línea hace que la página se vea bien en el celular -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi ahorro</title>
+  <meta name="description" content="Resumen del mes: ahorro posible, meta de ahorro y cuánto queda para gastar.">
+  <!-- Ícono de la pestaña del navegador -->
+  <link rel="icon" href="icono.svg" type="image/svg+xml">
+  <!-- Fuente Inter de Google Fonts (preconnect hace que cargue más rápido) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <!-- Usa la misma hoja de estilos que la página principal -->
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <header class="encabezado">
+    <!-- El href se completa desde ahorro.js con el mes que estás mirando -->
+    <a href="index.html" id="enlace-volver" class="enlace">← Mis gastos</a>
+    <h1>Mi ahorro</h1>
+
+    <!-- Flechas para cambiar de mes (las maneja datos.js) -->
+    <div class="navegador-mes">
+      <button type="button" id="mes-anterior" class="flecha-mes" aria-label="Mes anterior">‹</button>
+      <p id="titulo-mes" class="subtitulo" aria-live="polite"></p>
+      <button type="button" id="mes-siguiente" class="flecha-mes" aria-label="Mes siguiente">›</button>
+    </div>
+    <button type="button" id="volver-a-hoy" class="boton-texto volver-hoy" hidden>Volver a hoy</button>
+  </header>
+
+  <main class="contenedor">
+    <!-- Resumen del mes: ingresos, gastos, ahorro posible y meta -->
+    <section class="resumen" aria-label="Resumen del mes">
+      <!-- <dl> es una "lista de definiciones": pares de nombre (dt) y valor (dd) -->
+      <dl class="resumen-filas">
+        <div class="resumen-fila">
+          <dt>Ingresos</dt>
+          <dd id="resumen-ingresos" class="monto-ingreso"></dd>
+        </div>
+        <div class="resumen-fila">
+          <dt>Gastos</dt>
+          <dd id="resumen-gastos" class="monto-gasto"></dd>
+        </div>
+        <div class="resumen-fila resumen-destacado">
+          <dt>Ahorro posible</dt>
+          <dd id="resumen-ahorro"></dd>
+        </div>
+        <div class="resumen-fila">
+          <dt>Meta de ahorro</dt>
+          <dd>
+            <span id="resumen-meta"></span>
+            <button type="button" id="boton-cambiar-meta" class="boton-texto">cambiar</button>
+          </dd>
+        </div>
+      </dl>
+
+      <!-- Mini formulario para cambiar la meta (se muestra al tocar "cambiar") -->
+      <form id="formulario-meta" class="formulario-meta" hidden>
+        <input type="number" id="campo-meta" min="0" step="0.01" placeholder="Meta de este mes ($)" aria-label="Meta de ahorro de este mes">
+        <button type="submit" class="boton-chico">Guardar</button>
+        <button type="button" id="boton-cancelar-meta" class="boton-texto">Cancelar</button>
+      </form>
+      <p id="error-meta" class="mensaje-error" aria-live="polite" hidden></p>
+
+      <!-- Mensaje de cómo vas: "Vas bien..." o "Te pasaste..."
+           (aria-live hace que los lectores de pantalla lo lean cuando cambia) -->
+      <p id="estado-meta" class="estado-meta" aria-live="polite"></p>
+    </section>
+
+    <p class="nota">La meta que definas vale para el mes que estás viendo y los siguientes, hasta que la cambies.</p>
+  </main>
+
+  <!-- Primero el código compartido, después el propio de esta página -->
+  <script src="datos.js"></script>
+  <script src="ahorro.js"></script>
+</body>
+</html>
